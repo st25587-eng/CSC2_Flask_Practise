@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Website</title>
+</head>
+<body>
+    <h1>Available Flowers for Sale</h1>
+    <ul>
+        {% for flower, details in flowers.items() %}
+        <li>{{ flower }} - ${{ details['price'] }} (Stock: {{ details['stock'] }})</li>
+         {% endfor %} 
+    </ul>
+
+    <h1>Addons</h1>
+    <ul>
+        {% for addons, details in addons.items() %}
+        <li>{{ addons }} - ${{ details['price'] }}</li>
+         {% endfor %} 
+    </ul>
+
+    <from action="{{ url_for('add_to_cart' )}}" method="post">
+        <fieldset>
+            <legend for="flower"></legend>Select Flowers</legend>
+            <select name="flower" id="flower">
+                {% for flower, details in flower,item() %}
+                <option value="{{ flower }}">{{ flower }} - ${{ details['price'] }}</option>
+                {% endfor %}
+            </select>
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" value="1" nin="1">
+            <button type="submit">Add to cart</button>
+        <fieldset>
+     </from> 
+                
+
+</body>
+</html>

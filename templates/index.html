@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Flower Shop{% endblock %}
+
+{% block content %}
+<body>
+    <h1>Available Flowers for Sale</h1>
+    <ul>
+        {% for flower, details in flowers.items() %}
+        <li>{{ flower }} - ${{ details['price'] }} (Stock: {{ details['stock'] }})</li>
+         {% endfor %} 
+    </ul>
+     {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                     <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}  
+    
+
+    <form action="{{ url_for('add_to_cart')}}" method="post">
+        <fieldset>
+            <legend for="flower"></legend>Select Flowers</legend>
+            <select name="flower" id="flower">
+                {% for flower, details in flowers.items() %}
+                <option value="{{ flower }}">{{ flower }} - ${{ details['price'] }}</option>
+                {% endfor %}
+            </select>
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" value="1" nin="1">
+            <button type="submit">Add to cart</button>
+        <fieldset>
+    </form> 
+
+    <!-- Add-ons form -->
+    <form action="{{ url_for('select_addon') }}" method="post">
+        <fieldset>
+            <legend>Add_ons</legend>
+            {% for addon, data in addons.items() %}
+                <label>
+                    <input type="checkbox" name="addons" value="{{ addon }}">
+                    {{ addon }} (${{ data.price }})
+                </label><br>
+            {% endfor %}  
+            <button type="submit">Add to cart</button>  
+        </fieldset>  
+    </form>      
+   
+ 
+
+
+
+
+
+    <h1>Addons</h1>
+    <ul>
+        {% for addons, details in addons.items() %}
+        <li>{{ addons }} - ${{ details['price'] }}</li>
+         {% endfor %} 
+    </ul>
+    
+<h2>Your Cart</h2>
+{% if cart %}
+    <ul>
+        {% for item, details in cart.items() %}
+            <li>{{ item }}: {{ '%.2f' % details['quantity'] }} x ${{ details['price'] }}
+                                        ${{ details['price'] }}
+                = ${{ details['quantity'] * details['price'] }}
+                <a href="{{ url_for('remove_from_cart', item=item) }}">[Remove]</a>
+            </li>
+        {% endfor %}
+        {% for item, details in selected_addons.items() %}
+            <li>{{ item }} - ${{ details }} <a href="{{ url_for('remove_from_cart', item=item) }}">[Remove]</a>
+            </li>
+        {% endfor %}
+    </ul>                                   
+{% else %}
+    <p>Your cart is empty</p>
+{% endif %}    
+<h4>Total: ${{ '%.2f' % total }}</h4>
+
+<button type="submit" formaction="{{ url_for('cancel_order') }}">Cancel_Order</button>
+
+</body>
+{% endblock %}

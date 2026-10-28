@@ -91,7 +91,8 @@ def remove_from_cart(item):
 def select_addon():
     selected_addons = {}
     _,   addons = load_data()  # we only need addons 
-
+    
+    # Reading back the andons selected in the index.html
     selected_keys = request.form.getlist('addons') 
 
     for addon in selected_keys:
